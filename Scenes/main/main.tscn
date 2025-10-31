@@ -1,14 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://bo074a6wd7gk0"]
+[gd_scene load_steps=5 format=3 uid="uid://bo074a6wd7gk0"]
 
 [ext_resource type="Script" uid="uid://ch50obx7nehkq" path="res://Scenes/main/Scripts/main.gd" id="1_4etoo"]
 [ext_resource type="PackedScene" uid="uid://dit8n5j7jkjih" path="res://Entites/Character/Character.tscn" id="1_w1fgp"]
 [ext_resource type="PackedScene" uid="uid://ceeuyp5x3d4ry" path="res://Maps/Starter_Platform/Starter_Platform.tscn" id="2_4etoo"]
+[ext_resource type="PackedScene" uid="uid://2t43okjvkth2" path="res://Entites/Dummy/Dummy.tscn" id="3_wcurd"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_4etoo")
 
+[node name="Dummy" parent="." instance=ExtResource("3_wcurd")]
+position = Vector2(31, -11)
+scale = Vector2(2, 2)
+
 [node name="Character" parent="." instance=ExtResource("1_w1fgp")]
-position = Vector2(0, -10)
+position = Vector2(-30, -10)
 
 [node name="Camera2D" type="Camera2D" parent="Character"]
 zoom = Vector2(4, 4)

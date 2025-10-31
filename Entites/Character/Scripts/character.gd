@@ -1,18 +1,23 @@
 extends CharacterBody2D
 
 @export var SPEED := 60.0
-const GRAVITY := 200.0
-const JUMP_FORCE := 150.0
+const GRAVITY := 230.0
+const JUMP_FORCE := 100.0
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var area_2d: Area2D = $Area2D
+@onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
 
 var jump_queued := false
 var attacking := false
 var was_on_floor := false
+var current_speed: float
 
 func _ready() -> void:
 	anim_sprite.connect("animation_finished", _on_animation_finished)
+	current_speed = SPEED
+	collision_shape_2d.disabled = true
+	
 
 func _physics_process(delta: float) -> void:
 	var on_floor_now := is_on_floor()
@@ -21,9 +26,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y += GRAVITY * delta
 
 	var direction := Input.get_axis("MOVE_LEFT", "MOVE_RIGHT")
-	velocity.x = direction * SPEED
-
-	if abs(direction) > 0.01:
+	
+	if not attacking:
+		velocity.x = direction * current_speed
+	else:
+		velocity.x = 0
+		
+	if abs(direction) > 0.01 and not attacking:
 		anim_sprite.flip_h = direction < 0
 		area_2d.position.x = abs(area_2d.position.x) * (-1 if anim_sprite.flip_h else 1)
 
@@ -31,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ATTACK") and not attacking:
 		attacking = true
 		play_anim("attack")
-
+		
 	if attacking:
 		move_and_slide()
 		was_on_floor = on_floor_now
@@ -62,8 +71,8 @@ func _physics_process(delta: float) -> void:
 func play_anim(name: String) -> void:
 	if anim_sprite.animation != name:
 		if (name == "attack"):
-			SPEED = 20
-			area_2d.monitoring = true
+			current_speed = 0.0
+			collision_shape_2d.disabled = false	
 		anim_sprite.play(name)
 
 
@@ -76,8 +85,9 @@ func _on_animation_finished() -> void:
 			play_anim("idle")
 		"attack":
 			attacking = false
-			area_2d.monitoring = false
-			SPEED = 60
+			current_speed = SPEED
+			collision_shape_2d.disabled = true
+			
 			if not is_on_floor():
 				if velocity.y < 0:
 					play_anim("jump")
