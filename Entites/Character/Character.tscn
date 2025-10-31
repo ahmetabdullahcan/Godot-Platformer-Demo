@@ -1,9 +1,26 @@
-[gd_scene load_steps=34 format=3 uid="uid://dit8n5j7jkjih"]
+[gd_scene load_steps=40 format=3 uid="uid://dit8n5j7jkjih"]
 
 [ext_resource type="Script" uid="uid://c3n5monibpqi5" path="res://Entites/Character/Scripts/character.gd" id="1_bn8cn"]
 [ext_resource type="Texture2D" uid="uid://dqmfmivuelkyk" path="res://Assets/Character/Movement/Idle-Sheet (copy).png" id="1_us80i"]
+[ext_resource type="Texture2D" uid="uid://cifq0qmp76dvu" path="res://Assets/Character/Attack/Attack-01-Sheet.png" id="2_r513u"]
 [ext_resource type="Texture2D" uid="uid://dudv5xgc3gthx" path="res://Assets/Character/Movement/Run-Sheet.png" id="2_vt1tl"]
 [ext_resource type="Texture2D" uid="uid://vcitikoe7812" path="res://Assets/Character/Movement/Jump-All-Sheet.png" id="3_ccosj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cs4dc"]
+atlas = ExtResource("2_r513u")
+region = Rect2(0, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8uby"]
+atlas = ExtResource("2_r513u")
+region = Rect2(96, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dchdt"]
+atlas = ExtResource("2_r513u")
+region = Rect2(192, 0, 96, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mdqs5"]
+atlas = ExtResource("2_r513u")
+region = Rect2(288, 0, 96, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7p1f0"]
 atlas = ExtResource("3_ccosj")
@@ -115,6 +132,23 @@ region = Rect2(560, 0, 80, 80)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rd842"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cs4dc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8uby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dchdt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mdqs5")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 7.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7p1f0")
@@ -230,14 +264,28 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0epx5"]
 size = Vector2(17, 4)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r513u"]
+size = Vector2(15, 27)
+
 [node name="Character" type="CharacterBody2D"]
+collision_mask = 2
 script = ExtResource("1_bn8cn")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd842")
-animation = &"land"
+animation = &"attack"
 autoplay = "idle"
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, 22)
 shape = SubResource("RectangleShape2D_0epx5")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(30, -2)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_r513u")
