@@ -37,7 +37,7 @@ func _physics_process(delta: float) -> void:
 		area_2d.position.x = abs(area_2d.position.x) * (-1 if anim_sprite.flip_h else 1)
 
 
-	if Input.is_action_just_pressed("ATTACK") and not attacking:
+	if Input.is_action_just_pressed("ATTACK") and not attacking and on_floor_now:
 		attacking = true
 		play_anim("attack")
 		

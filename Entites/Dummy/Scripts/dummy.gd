@@ -7,13 +7,9 @@ var is_taking_damage: bool = false
 
 func _ready() -> void:
 	animated_sprite.animation_finished.connect(_on_animation_finished)
-	# Sinyal bağlantısı artık doğru: area_entered
-	area.area_entered.connect(_on_area_entered) # <-- Fonksiyon ismini güncelledik
+	area.area_entered.connect(_on_area_entered)
 
-# Sinyal alıcısı fonksiyonunu güncelleyin:
-# body yerine area parametresi kullanmak daha doğru olur.
-func _on_area_entered(area_hit): # <-- Parametreyi body yerine area_hit yaptık
-	print("ANAN - Çarpışma Başarılı!")
+func _on_area_entered(area_hit):
 	if not is_taking_damage:
 		_take_damage()
 
