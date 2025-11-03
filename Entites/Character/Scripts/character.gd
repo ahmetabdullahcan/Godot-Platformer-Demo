@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var SPEED := 60.0
+@export var DAMAGE := 20  # karakterin saldırı gücü
 const GRAVITY := 230.0
 const JUMP_FORCE := 100.0
 
@@ -12,6 +13,8 @@ var jump_queued := false
 var attacking := false
 var was_on_floor := false
 var current_speed: float
+
+
 
 func _ready() -> void:
 	anim_sprite.connect("animation_finished", _on_animation_finished)
@@ -67,13 +70,14 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	was_on_floor = on_floor_now
 
-
 func play_anim(name: String) -> void:
 	if anim_sprite.animation != name:
 		if (name == "attack"):
 			current_speed = 0.0
-			collision_shape_2d.disabled = false	
+			collision_shape_2d.disabled = false
+			area_2d.set_meta("damage", DAMAGE)
 		anim_sprite.play(name)
+
 
 
 func _on_animation_finished() -> void:
